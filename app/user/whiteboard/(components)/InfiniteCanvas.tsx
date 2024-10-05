@@ -146,6 +146,13 @@ const InfiniteCanvas = () => {
     setItems([...items, newItem]);
   };
 
+  const handleDelete = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+  };
+
   return (
     <div>
       <Toolbar addItem={addItem} />
@@ -159,6 +166,9 @@ const InfiniteCanvas = () => {
           onMouseLeave={handleMouseLeave}
           style={{ width: "100%", height: "100%", display: "block" }}
         />
+        <div className="w-full absolute bottom-[200px] flex items-center">
+          <button onClick={handleDelete}>Clear</button>
+        </div>
         <div className="text-center fixed bottom-0 left-4 right-4 z-10 bg-gray-100 p-2 rounded shadow">
           Zoom: {(scale * 100).toFixed(0)}%
         </div>
