@@ -34,6 +34,7 @@ const InfiniteCanvas = () => {
   const [startX, setStartX] = useState(0);
   const [startY, setStartY] = useState(0);
   const [items, setItems] = useState([]);
+  const [forward, setForward] = useState([]);
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -144,13 +145,29 @@ const InfiniteCanvas = () => {
       color: Math.floor(Math.random() * (20 - 1) + 1),
     };
     setItems([...items, newItem]);
+    setForward(items);
+    console.log(forward, "1st forward");
+    console.log(items, "first items");
   };
 
-  const handleDelete = () => {
+  const historyBack = () => {
     const canvas = canvasRef.current;
     const ctx = canvas.getContext("2d");
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    let arr = items.splice(0, items.length - 1);
+    setItems(arr);
+  };
+
+  const historyForward = () => {
+    const canvas = canvasRef.current;
+    const ctx = canvas.getContext("2d");
+
+    let l = items.length;
+    let item = forward.splice(l + 1, 1);
+    console.log(forward);
+    console.log(items);
+    console.log(item);
+    setItems([...items, item]);
   };
 
   return (
@@ -166,8 +183,9 @@ const InfiniteCanvas = () => {
           onMouseLeave={handleMouseLeave}
           style={{ width: "100%", height: "100%", display: "block" }}
         />
-        <div className="w-full absolute bottom-[200px] flex items-center">
-          <button onClick={handleDelete}>Clear</button>
+        <div className="w-full absolute bottom-[300px] flex items-center justify-center gap-10">
+          <button onClick={historyBack}>Back</button>
+          <button onClick={historyForward}>Forward</button>
         </div>
         <div className="text-center fixed bottom-0 left-4 right-4 z-10 bg-gray-100 p-2 rounded shadow">
           Zoom: {(scale * 100).toFixed(0)}%
